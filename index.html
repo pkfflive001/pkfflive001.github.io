@@ -49,19 +49,10 @@
     text-transform: uppercase;
   }
 
-  .option:hover {
-    background: #ddd;
-  }
+  .option:hover { background: #ddd; }
 
-  .correct {
-    background: green !important;
-    color: white;
-  }
-
-  .wrong {
-    background: red !important;
-    color: white;
-  }
+  .correct { background: green !important; color: white; }
+  .wrong { background: red !important; color: white; }
 
   #message {
     font-size: 20px;
@@ -74,6 +65,10 @@
     font-size: 13px;
     color: #666;
   }
+
+  .ad-box {
+    margin: 20px auto;
+  }
 </style>
 </head>
 
@@ -82,14 +77,46 @@
 <div class="header">🌍 Flag Quiz Game</div>
 
 <div id="score">Score: 0</div>
+
+<!-- 🔥 TOP DISPLAY AD -->
+<div class="ad-box">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7924864277518239"
+     crossorigin="anonymous"></script>
+
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-7924864277518239"
+     data-ad-slot="5439800609"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
 <div id="message"></div>
 
 <img id="flag" class="flag" src="" />
 
 <div id="options"></div>
 
+<!-- 🔥 IN-FEED AD (BETWEEN GAME CONTENT) -->
+<div class="ad-box">
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-format="fluid"
+     data-ad-layout-key="-fb+5w+4e-db+86"
+     data-ad-client="ca-pub-7924864277518239"
+     data-ad-slot="6639229416"></ins>
+
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
 <div class="footer">
-  <p><b>Privacy Policy:</b> This game does not collect any data. Score is saved only in browser.</p>
+  <p><b>Privacy Policy:</b> This game does not collect any data.</p>
   <p><b>Contact:</b> support@example.com</p>
 </div>
 
@@ -105,16 +132,7 @@ const allQuestions = [
   { flag: "https://flagcdn.com/w320/bd.png", name: "BANGLADESH" },
   { flag: "https://flagcdn.com/w320/cn.png", name: "CHINA" },
   { flag: "https://flagcdn.com/w320/jp.png", name: "JAPAN" },
-  { flag: "https://flagcdn.com/w320/kr.png", name: "SOUTH KOREA" },
-  { flag: "https://flagcdn.com/w320/sa.png", name: "SAUDI ARABIA" },
-  { flag: "https://flagcdn.com/w320/tr.png", name: "TURKEY" },
-  { flag: "https://flagcdn.com/w320/ae.png", name: "UAE" },
-  { flag: "https://flagcdn.com/w320/gb.png", name: "UNITED KINGDOM" },
-  { flag: "https://flagcdn.com/w320/us.png", name: "UNITED STATES" },
-  { flag: "https://flagcdn.com/w320/de.png", name: "GERMANY" },
-  { flag: "https://flagcdn.com/w320/fr.png", name: "FRANCE" },
-  { flag: "https://flagcdn.com/w320/it.png", name: "ITALY" },
-  { flag: "https://flagcdn.com/w320/id.png", name: "INDONESIA" }
+  { flag: "https://flagcdn.com/w320/us.png", name: "UNITED STATES" }
 ];
 
 function startGame() {
@@ -128,7 +146,7 @@ function nextQuestion() {
 
   if (questions.length === 0) {
     document.getElementById("message").innerHTML =
-      `🎉 Game Over! Your Score: ${score}`;
+      `🎉 Game Over! Score: ${score}`;
     document.getElementById("options").innerHTML = "";
     return;
   }
@@ -136,7 +154,6 @@ function nextQuestion() {
   currentQuestion = questions.pop();
 
   document.getElementById("flag").src = currentQuestion.flag;
-  document.getElementById("message").innerHTML = "";
   document.getElementById("score").innerText = "Score: " + score;
 
   let options = [currentQuestion.name];
@@ -148,17 +165,11 @@ function nextQuestion() {
 
   options.sort(() => Math.random() - 0.5);
 
-  let html = "";
-  options.forEach(opt => {
-    html += `<button class="option" onclick="checkAnswer('${opt}')">${opt}</button>`;
-  });
+  document.getElementById("options").innerHTML = options.map(opt =>
+    `<button class="option" onclick="checkAnswer('${opt}')">${opt}</button>`
+  ).join("");
 
-  document.getElementById("options").innerHTML = html;
-
-  // ⏱ AUTO NEXT after 5 seconds
-  autoNextTimer = setTimeout(() => {
-    nextQuestion();
-  }, 5000);
+  autoNextTimer = setTimeout(nextQuestion, 5000);
 }
 
 function checkAnswer(selected) {
@@ -169,13 +180,8 @@ function checkAnswer(selected) {
   buttons.forEach(btn => {
     btn.disabled = true;
 
-    if (btn.innerText === currentQuestion.name) {
-      btn.classList.add("correct");
-    }
-
-    if (btn.innerText === selected && selected !== currentQuestion.name) {
-      btn.classList.add("wrong");
-    }
+    if (btn.innerText === currentQuestion.name) btn.classList.add("correct");
+    if (btn.innerText === selected && selected !== currentQuestion.name) btn.classList.add("wrong");
   });
 
   if (selected === currentQuestion.name) {
@@ -188,14 +194,11 @@ function checkAnswer(selected) {
 
   document.getElementById("score").innerText = "Score: " + score;
 
-  // ⏱ Next after 2 seconds
-  setTimeout(() => {
-    nextQuestion();
-  }, 2000);
+  setTimeout(nextQuestion, 2000);
 }
 
 window.onload = startGame;
 </script>
 
 </body>
-</html>
+  </html>
